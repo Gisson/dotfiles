@@ -48,4 +48,9 @@ else
   PS1='\[\e[33m\][\t]\[\033[01;32m\]\u@\h:\[\e[34m\]\w\[\e[37m\]\[\e[92m\]$\[\033[00m\] '
 fi
 
+
 export EDITOR=vim
+
+if [ -f ~/.bashrc_extra ];then
+  . ~/.bashrc_extra
+fi
