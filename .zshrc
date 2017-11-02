@@ -17,5 +17,5 @@ compinit
 # End of lines added by compinstall
 source ~/zsh-git-prompt/zshrc.sh
 
-PROMPT='%F{yellow}[%T]%F{green}%n%f@%F{red}%m%f %F{blue}%1~%f %# '
+PROMPT='%F{yellow}[%T]%F{green}%n%f@%F{red}%m%f %F{blue}%1~%f $(git_super_status) %# '
 RPROMPT='[%F{yellow}%?%f]'
