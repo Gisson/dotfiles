@@ -303,6 +303,11 @@ globalkeys = gears.table.join(
               {description = "select next", group = "layout"}),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(-1)                end,
               {description = "select previous", group = "layout"}),
+    awful.key({ modkey, "k"   }, "F1", function () os.execute("setxkbmap pt")                end,
+              {description = "set pt keymap"}),
+    awful.key({ modkey, "k"   }, "F2", function () os.execute("setxkbmap us")                end,
+              {description = "set us keymap"}),
+
 
     awful.key({ modkey, "Control" }, "n",
               function ()
