@@ -13,19 +13,21 @@ else
   printf "zsh-git-prompt requirement already installed\n"
 fi
 
-if [[ -f ../.zshrc ]];then
+if [[ -f ~/.zshrc ]];then
   printf "$HOME/.zshrc already exists. Do you which to replace it by ELIMINATING the existing? [Enter to continue, Ctrl-c to exit]"
   read
   cp ~/.zshrc ~/.zshrc.bak
 fi
 ln -sf $(pwd)/.zshrc ~/.zshrc
 
-if [[ -f ../.vimrc ]];then
+if [[ -f ~/.vimrc ]];then
   printf "$HOME/.vimrc already exists. Do you which to replace it by ELIMINATING the existing? [Enter to continue, Ctrl-c to exit]"
   read
   cp ~/.vimrc ~/.vimrc.bak
 fi
 ln -sf $(pwd)/.vimrc ~/.vimrc
 
-
+if [[ -f ~/.Xresources ]];then
+  cat .Xresources >> ~/.Xresources
+fi
 printf "Everything is now ready!\n"
