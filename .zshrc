@@ -17,5 +17,10 @@ compinit
 # End of lines added by compinstall
 source ~/zsh-git-prompt/zshrc.sh
 
+# PS1
 PROMPT='%F{yellow}[%T]%F{green}%n%f@%F{red}%m%f %F{blue}%1~%f $(git_super_status) %# '
 RPROMPT='[%F{yellow}%?%f]'
+
+# Keyboard binds
+bindkey "${terminfo[khome]}" beginning-of-line
+bindkey "${terminfo[kend]}" end-of-line
