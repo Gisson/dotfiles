@@ -1,6 +1,8 @@
 #!/bin/sh
 install_command="pacman -S"
 
+! [[ $(whoami) = "root" ]] && echo "Script should be run as root or it will fail. Continue? [Enter to continue, Ctrl-c to exit]" && read
+
 while getopts "d:" opt;do
 	case ${opt} in
 		d)
