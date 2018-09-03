@@ -1,8 +1,6 @@
 #!/bin/sh
 install_command="pacman -S"
 
-! [[ $(whoami) = "root" ]] && echo "Script should be run as root or it will fail. Continue? [Enter to continue, Ctrl-c to exit]" && read
-
 while getopts "d:" opt;do
 	case ${opt} in
 		d)
@@ -26,7 +24,7 @@ while getopts "d:" opt;do
 	esac
 done
 
-[[ $(command -v zsh ) ]] && printf "zsh already installed!\n" || $($install_command zsh)
+[[ $(command -v zsh ) ]] && printf "zsh already installed!\n" || sudo $($install_command zsh)
 if ! [[ -d ~/zsh-git-prompt ]];then
   printf "Repository zsh-git-prompt is required. Proceed? [Enter to continue, Ctrl-c to exit]"
   read
