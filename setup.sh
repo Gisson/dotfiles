@@ -51,6 +51,15 @@ fi
 ln -sf $(pwd)/.vimrc ~/.vimrc
 
 if [[ -f ~/.Xresources ]];then
-  cat .Xresources >> ~/.Xresources
+  printf "$HOME/.Xresources already exists. Do you which to replace it by ELIMINATING the existing? [Enter to continue, Ctrl-c to exit]"
+  read
+  cp ~/.Xresources ~/.Xresources.bak
 fi
+ln -sf $(pwd)/.Xresources ~/.Xresources
+if [[ -f ~/.screenrc ]];then
+  printf "$HOME/.screenrc already exists. Do you which to replace it by ELIMINATING the existing? [Enter to continue, Ctrl-c to exit]"
+  read
+  cp ~/.screenrc ~/.screenrc.bak
+fi
+ln -sf $(pwd)/.screenrc ~/.screenrc
 printf "Everything is now ready!\n"
