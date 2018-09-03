@@ -1,6 +1,29 @@
 #!/bin/sh
 install_command="pacman -S"
 
+while getopts "d:" opt;do
+	case ${opt} in
+		d)
+			case ${OPTARG} in 
+				arch)
+					install_command="pacman -S"
+					;;
+				gentoo)
+					install_command="emerge -v"
+					;;
+				*)
+					echo "Unrecognized distro. Falling back to arch"
+					install_command="pacman -S"
+					;;
+			esac
+			echo "Using ${OPTARG}"
+			;;
+		*)
+			echo "Unexpected option"
+			;;
+	esac
+done
+
 [[ $(command -v zsh ) ]] && printf "zsh already installed!\n" || $($install_command zsh)
 if ! [[ -d ~/zsh-git-prompt ]];then
   printf "Repository zsh-git-prompt is required. Proceed? [Enter to continue, Ctrl-c to exit]"
