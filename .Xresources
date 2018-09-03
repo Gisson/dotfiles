@@ -3,3 +3,4 @@ XTerm*background:black
 XTerm*foreground:white
 XTerm*utf8:1
 XTerm*selectToClipboard:true
+xterm*font:     *-fixed-*-*-*-12-*
