@@ -15,7 +15,7 @@ zstyle :compinstall filename '/home/jorge/.zshrc'
 autoload -Uz compinit
 compinit
 # End of lines added by compinstall
-source ~/zsh-git-prompt/zshrc.sh
+source ~/dotfiles/zsh-git-prompt/zshrc.sh
 
 # PS1
 PROMPT='%F{yellow}[%T]%F{green}%n%f@%F{red}%m%f %F{blue}%1~%f $(git_super_status) %# '
