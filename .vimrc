@@ -52,7 +52,7 @@ set tabstop=4
 set shiftwidth=4
 
 "show characters like tabs and spaces
-set list
+set nolist
 "set listchars=tab:>\ ,trail:·,nbsp:·
 map <C-n> :NERDTreeToggle<CR>
 
