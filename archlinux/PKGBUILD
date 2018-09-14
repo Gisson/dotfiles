@@ -1,0 +1,16 @@
+pkgname=dotfiles
+pkgver=0.1
+pkgdesc="Package including my dotfiles configs"
+pkgrel=1
+url="https://github.com/Gisson/dotfiles.git"
+arch=(any)
+
+
+prepare(){
+	cd ~/dotfiles
+}
+
+package(){
+	cd ~/dotfiles
+	make install
+}
