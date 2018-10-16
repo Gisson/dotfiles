@@ -1,0 +1,6 @@
+setxkbmap us
+xscreensaver -no-splash &
+xcompmgr &
+nm-applet &
+xrdb ~/.Xresources &
+[[ -f .fehbg ]] && . /home/jorge/.fehbg &
