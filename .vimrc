@@ -26,6 +26,7 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'scrooloose/nerdtree'
 Plugin 'xuhdev/vim-latex-live-preview'
 Plugin 'tpope/vim-surround'
+"Plugin 'scrooloose/syntastic'
 " Install L9 and avoid a Naming conflict if you've already installed a
 " different version somewhere else.
 " Plugin 'ascenator/L9', {'name': 'newL9'}
@@ -61,3 +62,15 @@ map <C-n> :NERDTreeToggle<CR>
 " vim-latexc-live-preview configs
 let g:livepreview_previewer = 'evince'
 let g:livepreview_engine = 'pdflatex'
+filetype indent on
+
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
+
+"let g:syntastic_always_populate_loc_list = 1
+"let g:syntastic_auto_loc_list = 1
+"let g:syntastic_check_on_open = 1
+"let g:syntastic_check_on_wq = 0
+color delek
+set number
