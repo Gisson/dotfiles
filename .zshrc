@@ -24,3 +24,5 @@ RPROMPT='[%F{yellow}%?%f]'
 # Keyboard binds
 bindkey "${terminfo[khome]}" beginning-of-line
 bindkey "${terminfo[kend]}" end-of-line
+
+stty erase '^?'
