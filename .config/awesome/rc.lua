@@ -10,6 +10,12 @@ local beautiful = require("beautiful")
 local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
+local os = require("os")
+
+--batterybar = require("batterybar")
+battery = require("battery")
+
+
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
@@ -44,7 +50,7 @@ end
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "xterm"
+terminal = "konsole"
 editor = os.getenv("EDITOR") or "nano"
 editor_cmd = terminal .. " -e " .. editor
 
@@ -169,7 +175,7 @@ awful.screen.connect_for_each_screen(function(s)
     -- Wallpaper
 
     -- Each screen has its own tag table.
-    awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
+    awful.tag({ "1", "2", "3", "4" }, s, awful.layout.layouts[2])
 
     -- Create a promptbox for each screen
     s.mypromptbox = awful.widget.prompt()
@@ -190,23 +196,44 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create the wibox
     s.mywibox = awful.wibar({ position = "top", screen = s })
 
+
+	local right_layout = wibox.layout.fixed.horizontal()
+
+	if s.index == 1 then
+		right_layout:add(wibox.widget.systray())
+	end
+	right_layout:add(battery.widget)
+	right_layout:add(mykeyboardlayout)
+	right_layout:add(mytextclock)
+	right_layout:add(s.mylayoutbox)
+
+
+	local left_layout = wibox.layout.fixed.horizontal()
+	left_layout:add(mylauncher)
+	left_layout:add(s.mytaglist)
+	left_layout:add(s.mypromptbox)
+	--left_layout:add(firefoxprompt)
+	--right_layout:add(batterybar.widget)
     -- Add widgets to the wibox
-    s.mywibox:setup {
+	s.mywibox:setup {
         layout = wibox.layout.align.horizontal,
-        { -- Left widgets
-            layout = wibox.layout.fixed.horizontal,
-            mylauncher,
-            s.mytaglist,
-            s.mypromptbox,
-        },
+        --{ -- Left widgets
+         --   layout = wibox.layout.fixed.horizontal,
+         --   mylauncher,
+         --   s.mytaglist,
+         --   s.mypromptbox,
+	--		firefoxprompt,
+     --   },
+	    left_layout,
         s.mytasklist, -- Middle widget
-        { -- Right widgets
-            layout = wibox.layout.fixed.horizontal,
-            mykeyboardlayout,
-            wibox.widget.systray(),
-            mytextclock,
-            s.mylayoutbox,
-        },
+        right_layout
+            --layout = wibox.layout.fixed.horizontal,
+			--battery.widget(),
+            --mykeyboardlayout,
+            --wibox.widget.systray(),
+            --mytextclock,
+            --s.mylayoutbox,
+        ,
     }
 end)
 -- }}}
@@ -310,6 +337,8 @@ globalkeys = gears.table.join(
     awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
               {description = "run prompt", group = "launcher"}),
 
+	awful.key({ modkey }, "S", function () awful.screen.focused().firefoxprompt:run() end),
+
     awful.key({ modkey }, "x",
               function ()
                   awful.prompt.run {
@@ -370,7 +399,8 @@ clientkeys = gears.table.join(
     awful.key({ modkey, "Control"}, "+", function () awful.util.spawn("amixer -c0 set Master 2%+") end),
     awful.key({ modkey, "Control"}, "-", function () awful.util.spawn("amixer set Master 2%-") end),
     awful.key({ modkey, "Control"}, "m", function () awful.util.spawn("amixer  sset Master toggle") end),
-    awful.key({ modkey,  }, "F12", function () awful.util.spawn(lockscreen)  end)
+    awful.key({ modkey,  }, "F12",  function() awful.util.spawn(lockscreen) end ),
+    awful.key({ modkey,  }, "F11", function () awful.util.spawn(lockscreen) os.execute("sleep 3")  awful.util.spawn(suspend)  end)
 )
 
 -- Bind all key numbers to tags.
@@ -463,7 +493,8 @@ awful.rules.rules = {
           "Wpa_gui",
           "pinentry",
           "veromix",
-          "xtightvncviewer"},
+          "xtightvncviewer",
+	  	  "konsole"},
 
         name = {
           "Event Tester",  -- xev.
@@ -500,57 +531,8 @@ client.connect_signal("manage", function (c)
     end
 end)
 
--- Add a titlebar if titlebars_enabled is set to true in the rules.
-client.connect_signal("request::titlebars", function(c)
-    -- buttons for the titlebar
-    local buttons = gears.table.join(
-        awful.button({ }, 1, function()
-            client.focus = c
-            c:raise()
-            awful.mouse.client.move(c)
-        end),
-        awful.button({ }, 3, function()
-            client.focus = c
-            c:raise()
-            awful.mouse.client.resize(c)
-        end)
-    )
-
-    awful.titlebar(c) : setup {
-        { -- Left
-            awful.titlebar.widget.iconwidget(c),
-            buttons = buttons,
-            layout  = wibox.layout.fixed.horizontal
-        },
-        { -- Middle
-            { -- Title
-                align  = "center",
-                widget = awful.titlebar.widget.titlewidget(c)
-            },
-            buttons = buttons,
-            layout  = wibox.layout.flex.horizontal
-        },
-        { -- Right
-            awful.titlebar.widget.floatingbutton (c),
-            awful.titlebar.widget.maximizedbutton(c),
-            awful.titlebar.widget.stickybutton   (c),
-            awful.titlebar.widget.ontopbutton    (c),
-            awful.titlebar.widget.closebutton    (c),
-            layout = wibox.layout.fixed.horizontal()
-        },
-        layout = wibox.layout.align.horizontal
-    }
-end)
-
--- Enable sloppy focus, so that focus follows mouse.
-client.connect_signal("mouse::enter", function(c)
-    if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-        and awful.client.focus.filter(c) then
-        client.focus = c
-    end
-end)
-
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 lockscreen="xscreensaver-command -lock"
+suspend="systemctl suspend"
