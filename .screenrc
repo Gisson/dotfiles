@@ -7,3 +7,4 @@ hardstatus alwayslastline
 hardstatus string "%{.kW}%-w%{.W}%n %t%{-}%{=b kw}%?%+w%? %=%H " #B&W & date&time
 altscreen on
 escape ^Bb
+startup_message off
