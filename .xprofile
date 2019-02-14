@@ -1,6 +1,7 @@
 setxkbmap us
-xscreensaver -no-splash &
-xcompmgr &
-nm-applet &
-xrdb ~/.Xresources &
+[[ ! $(ps -u $(whoami) | grep urxvtd) && $(which urxvtd 2>/dev/null) ]] && urxvtd -q -o -f
+[[ $(which pulseaudio) ]] && pulseaudio --start
+[[ $(which xscreensaver) ]] && xscreensaver -no-splash &
+[[ $(which xcompmgr) ]] && xcompmgr &
+[[ $(which nm-applet) ]] && nm-applet &
 [[ -f .fehbg ]] && . /home/jorge/.fehbg &
