@@ -18,7 +18,11 @@ HISTFILESIZE=2000
 #shopt -s checkwinsize
 
 force_color_prompt=yes
-alias ls='ls --color=auto'
+if [[ $(uname) = "Darwin" ]];then
+	alias ls="ls -G"
+elif [[ $(uname) = "Linux" ]];then
+	alias ls="ls --color=auto"
+fi
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
