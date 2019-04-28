@@ -89,9 +89,16 @@ fi
 PS1_PREFIX='\[\e[33m\][\t]\[\033[01;32m\]\u@\h:\[\e[34m\]\w'
 
 PS1_MIDDLE=""
-if [ -f /usr/share/git/git-prompt.sh ];then
-	. /usr/share/git/git-prompt.sh
-	PS1_MIDDLE='\e[37m\]$(__git_ps1)\[\e[92m\]'
+if [[ $(uname) = "Darwin" ]];then
+	if [ -f ~/.git-prompt.sh ];then
+		source ~/.git-prompt.sh
+		PS1_MIDDLE='\e[37m\]$(__git_ps1)\[\e[92m\]'
+	fi
+elif [[ $(uname) = "Linux" ]];then
+	if [ -f /usr/share/git/git-prompt.sh ];then
+		. /usr/share/git/git-prompt.sh
+		PS1_MIDDLE='\e[37m\]$(__git_ps1)\[\e[92m\]'
+	fi
 fi
 
 if ! [[ -z ${CLOUD_ENV} ]];then
