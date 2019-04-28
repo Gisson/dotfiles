@@ -11,8 +11,7 @@ HISTCONTROL=ignoreboth
 # append to the history file, don't overwrite it
 shopt -s histappend
 
-# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
+
 HISTFILESIZE=2000
 
 #shopt -s checkwinsize
@@ -20,6 +19,7 @@ HISTFILESIZE=2000
 force_color_prompt=yes
 if [[ $(uname) = "Darwin" ]];then
 	alias ls="ls -G"
+	export PATH="$PATH:/usr/local/bin"
 elif [[ $(uname) = "Linux" ]];then
 	alias ls="ls --color=auto"
 fi
@@ -29,6 +29,45 @@ alias l='ls -CF'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+alias awsprod='aws eks --region us-east-1 update-kubeconfig --name production && export CLOUD_ENV=awsprod'
+alias awsstg='aws eks --region eu-west-1 update-kubeconfig --name staging && export CLOUD_ENV=awsstg'
+alias gcpprod='~/google-cloud-sdk/bin/gcloud container clusters get-credentials production --zone us-east1-b --project production-158815 && export CLOUD_ENV=gcpprod'
+alias gcpstg='~/google-cloud-sdk/bin/gcloud container clusters get-credentials k8s-staging --zone europe-west1-d --project staging-158815 && export CLOUD_ENV=gcpstg'
+alias gcploadtest='~/google-cloud-sdk/bin/gcloud container clusters get-credentials loadtest --zone europe-west1 --project staging-158815 && export CLOUD_ENV=loadtest'
+
+if [[ -f ~/.kube/config ]];then
+	if [[ $(cat ~/.kube/config  | grep "current-context" | grep "arn:aws:eks:us-east-1:506714715093:cluster/production" ) ]] ;then
+		export CLOUD_ENV="awsprod"
+	elif [[ $(cat ~/.kube/config  | grep "current-context" | grep "arn:aws:eks:eu-west-1:506714715093:cluster/staging" ) ]] ;then
+		export CLOUD_ENV="awsstg"
+	elif [[ $(cat ~/.kube/config  | grep "current-context" | grep "gke_production-158815_us-east1-b_production" ) ]] ;then
+		export CLOUD_ENV="gcpprod"
+	elif [[ $(cat ~/.kube/config  | grep "current-context" | grep "gke_staging-158815_europe-west1-d_k8s-staging" ) ]] ;then
+		export CLOUD_ENV="gcpstg"
+	elif [[ $(cat ~/.kube/config | grep "current-context" | grep "gke_staging-158815_europe-west1_loadtest") ]];then
+		export CLOUD_ENV="loadtest"
+	else
+		export CLOUD_ENV="unknown"
+	fi
+fi
+
+function printawsenv {
+	red="\e[31m"
+	yellow="\e[33m"
+	green="\e[32m"
+	white="\e[00m"
+	if [[ $AWS_ENV = "prod" ]];then
+		echo -n "prod"
+		#export __aws_ps1="(${red}prod)${white}"
+	elif [[ $AWS_ENV = "stg" ]];then
+		echo -n "stg"
+		#export __aws_ps1="(${green}stg)${white}"
+	else
+		echo -n "(${yellow}unknown)${white}"
+	fi
+
+}
+
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -45,13 +84,21 @@ if ! shopt -oq posix; then
   fi
 fi
 
+PS1_PREFIX="\[\e[33m\][\t]\[\033[01;32m\]\u@\h:\[\e[34m\]\w"
+
+PS1_MIDDLE=""
 if [ -f /usr/share/git/git-prompt.sh ];then
-  . /usr/share/git/git-prompt.sh
-  PS1='\[\e[33m\][\t]\[\033[01;32m\]\u@\h:\[\e[34m\]\w\[\e[37m\]$(__git_ps1)\[\e[92m\]$\[\033[00m\] '
-else
-  PS1='\[\e[33m\][\t]\[\033[01;32m\]\u@\h:\[\e[34m\]\w\[\e[37m\]\[\e[92m\]$\[\033[00m\] '
+	. /usr/share/git/git-prompt.sh
+	PS1_MIDDLE='[\e[37m\]$(__git_ps1)\[\e[92m\]'
 fi
 
+if ! [[ -z ${CLOUD_ENV} ]];then
+	PS1_MIDDLE="${PS1_MIDDLE} \e[37m(${CLOUD_ENV})\[\033[00m\]"
+fi
+
+PS1_POSTFIX="$\[\033[00m\] "
+
+PS1="${PS1_PREFIX} ${PS1_MIDDLE} ${PS1_POSTFIX}"
 
 export EDITOR=vim
 
