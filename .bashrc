@@ -102,7 +102,7 @@ elif [[ $(uname) = "Linux" ]];then
 fi
 
 if ! [[ -z ${CLOUD_ENV} ]];then
-	PS1_MIDDLE="${PS1_MIDDLE} \e[37m(${CLOUD_ENV})\[\033[00m\]"
+	PS1_MIDDLE="${PS1_MIDDLE} \e[37m\](\${CLOUD_ENV})\e[00m"
 fi
 
 PS1_POSTFIX="$\[\033[00m\] "
