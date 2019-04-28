@@ -46,6 +46,8 @@ if [[ -f ~/.kube/config ]];then
 		export CLOUD_ENV="gcpstg"
 	elif [[ $(cat ~/.kube/config | grep "current-context" | grep "gke_staging-158815_europe-west1_loadtest") ]];then
 		export CLOUD_ENV="loadtest"
+	elif ! [[ $(cat ~/.kube/config | grep "current-context") ]];then
+		export CLOUD_ENV=""
 	else
 		export CLOUD_ENV="unknown"
 	fi
@@ -84,12 +86,12 @@ if ! shopt -oq posix; then
   fi
 fi
 
-PS1_PREFIX="\[\e[33m\][\t]\[\033[01;32m\]\u@\h:\[\e[34m\]\w"
+PS1_PREFIX='\[\e[33m\][\t]\[\033[01;32m\]\u@\h:\[\e[34m\]\w'
 
 PS1_MIDDLE=""
 if [ -f /usr/share/git/git-prompt.sh ];then
 	. /usr/share/git/git-prompt.sh
-	PS1_MIDDLE='[\e[37m\]$(__git_ps1)\[\e[92m\]'
+	PS1_MIDDLE='\e[37m\]$(__git_ps1)\[\e[92m\]'
 fi
 
 if ! [[ -z ${CLOUD_ENV} ]];then
@@ -98,7 +100,8 @@ fi
 
 PS1_POSTFIX="$\[\033[00m\] "
 
-PS1="${PS1_PREFIX} ${PS1_MIDDLE} ${PS1_POSTFIX}"
+export PS1="${PS1_PREFIX} ${PS1_MIDDLE} ${PS1_POSTFIX}"
+
 
 export EDITOR=vim
 
