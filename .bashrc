@@ -86,26 +86,26 @@ if ! shopt -oq posix; then
   fi
 fi
 
-PS1_PREFIX='\[\e[33m\][\t]\[\033[01;32m\]\u@\h:\[\e[34m\]\w'
+PS1_PREFIX='\[\033[33m\][\t]\[\033[1;32m\]\u@\h:\[\033[34m\]\w'
 
 PS1_MIDDLE=""
 if [[ $(uname) = "Darwin" ]];then
 	if [ -f ~/.git-prompt.sh ];then
 		source ~/.git-prompt.sh
-		PS1_MIDDLE='\e[37m\]$(__git_ps1)\[\e[92m\]'
+		PS1_MIDDLE='\[\033[37m\]$(__git_ps1)\[\033[92m\]'
 	fi
 elif [[ $(uname) = "Linux" ]];then
 	if [ -f /usr/share/git/git-prompt.sh ];then
 		. /usr/share/git/git-prompt.sh
-		PS1_MIDDLE='\e[37m\]$(__git_ps1)\[\e[92m\]'
+		PS1_MIDDLE='\[\033[37m\]$(__git_ps1)\[\033[92m\]'
 	fi
 fi
 
 if ! [[ -z ${CLOUD_ENV} ]];then
-	PS1_MIDDLE="${PS1_MIDDLE} \e[37m\](\${CLOUD_ENV})\e[00m"
+	PS1_MIDDLE="${PS1_MIDDLE} \e\[\033[37m\](\[\033\${CLOUD_ENV}\])\[\033[00m\]"
 fi
 
-PS1_POSTFIX="$\[\033[00m\] "
+PS1_POSTFIX="\$\[\033[00m\] "
 
 export PS1="${PS1_PREFIX} ${PS1_MIDDLE} ${PS1_POSTFIX}"
 
