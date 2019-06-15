@@ -1,26 +1,33 @@
 #!/usr/bin/make -f
+.PHONY: install uninstall
 
-deps:
-ifeq ("$(wildcard zsh-git-prompt)","")
+install: zsh-git-prompt ~/.config/awesome ~/.zshrc ~/.Xresources ~/.screenrc ~/.vimrc
+
+zsh-git-prompt:
 	git clone https://github.com/olivierverdier/zsh-git-prompt.git
-endif
 
-
-install: deps
+~/.vimrc:
 	ln -sf ~/dotfiles/.vimrc ~/.vimrc
+
+~/.screenrc:
 	ln -sf ~/dotfiles/.screenrc ~/.screenrc
+
+~/.Xresources:
 	ln -sf ~/dotfiles/.Xresources ~/.Xresources
+
+~/.zshrc:
 	ln -sf ~/dotfiles/.zshrc ~/.zshrc
-	mkdir -p ~/.config/awesome
-	ln -sf ~/dotfiles/.config/awesome/rc.lua ~/.config/awesome/rc.lua
+
+~/.config/awesome:
+	ln -sf ~/dotfiles/.config/awesome ~/.config/awesome
+
+
 
 
 uninstall:
-	unlink ~/.vimrc
-	unlink ~/.screenrc
-	unlink ~/.zshrc
-	unlink ~/.Xresources
-	unlink ~/.config/awesome/rc.lua
-ifneq ("$(wildcard zsh-git-prompt)","")
-	rm -rf zsh-git-prompt
-endif
+	-unlink ~/.vimrc
+	-unlink ~/.screenrc
+	-unlink ~/.zshrc
+	-unlink ~/.Xresources
+	-unlink ~/.config/awesome
+	-rm -rf zsh-git-prompt
