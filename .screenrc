@@ -8,3 +8,13 @@ hardstatus string "%{.kW}%-w%{.W}%n %t%{-}%{=b kw}%?%+w%? %=%H " #B&W & date&tim
 altscreen on
 escape ^Bb
 startup_message off
+stty erase ^?
+
+## Start default shells
+shell	bash
+#screen -t 'root' su -
+#screen -t
+autodetach on
+
+# I like to hear the beep.
+vbell off
