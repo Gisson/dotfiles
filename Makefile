@@ -7,12 +7,12 @@ endif
 
 
 install: deps
-	ln -s ~/dotfiles/.vimrc ~/.vimrc 
-	ln -s ~/dotfiles/.screenrc ~/.screenrc
-	ln -s ~/dotfiles/.Xresources ~/.Xresources
-	ln -s ~/dotfiles/.zshrc ~/.zshrc
+	ln -sf ~/dotfiles/.vimrc ~/.vimrc
+	ln -sf ~/dotfiles/.screenrc ~/.screenrc
+	ln -sf ~/dotfiles/.Xresources ~/.Xresources
+	ln -sf ~/dotfiles/.zshrc ~/.zshrc
 	mkdir -p ~/.config/awesome
-	ln -s ~/dotfiles/.config/awesome/rc.lua ~/.config/awesome/rc.lua
+	ln -sf ~/dotfiles/.config/awesome/rc.lua ~/.config/awesome/rc.lua
 
 
 uninstall:
