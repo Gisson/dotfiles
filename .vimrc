@@ -26,6 +26,8 @@ Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'scrooloose/nerdtree'
 Plugin 'xuhdev/vim-latex-live-preview'
 Plugin 'tpope/vim-surround'
+Plugin 'hashivim/vim-terraform'
+Plugin 'fatih/vim-go'
 "Plugin 'scrooloose/syntastic'
 " Install L9 and avoid a Naming conflict if you've already installed a
 " different version somewhere else.
@@ -62,6 +64,16 @@ map <C-n> :NERDTreeToggle<CR>
 " vim-latexc-live-preview configs
 let g:livepreview_previewer = 'evince'
 let g:livepreview_engine = 'pdflatex'
+
+
+
+" vim-terraform
+let g:terraform_align=1
+let g:terraform_fold_sections=1
+let g:terraform_remap_spacebar=1
+let g:terraform_fmt_on_save=1
+
+
 filetype indent on
 
 "set statusline+=%#warningmsg#
