@@ -1,5 +1,4 @@
 DEFAULT_SESSION=awesome
-
 [[ -f ~/.Xresources ]] && xrdb -merge ~/.Xresources
 [ -f ~/.xprofile ] && . ~/.xprofile
 case $1 in

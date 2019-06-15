@@ -1,7 +1,7 @@
 setxkbmap us
 [[ ! $(ps -u $(whoami) | grep urxvtd) && $(which urxvtd 2>/dev/null) ]] && urxvtd -q -o -f
-[[ $(which pulseaudio) ]] && pulseaudio --start
-[[ $(which xscreensaver) ]] && xscreensaver -no-splash &
-[[ $(which xcompmgr) ]] && xcompmgr &
-[[ $(which nm-applet) ]] && nm-applet &
+[[ $(which pulseaudio 2>/dev/null) ]] && pulseaudio --start
+[[ $(which xscreensaver 2>/dev/null) ]] && xscreensaver -no-splash &
+[[ $(which xcompmgr 2>/dev/null) ]] && xcompmgr &
+[[ $(which nm-applet 2>/dev/null) ]] && nm-applet &
 [[ -f .fehbg ]] && . /home/jorge/.fehbg &
