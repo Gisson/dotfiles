@@ -4,6 +4,33 @@ case $- in
       *) return;;
 esac
 
+function build_ps1 {
+
+PS1_PREFIX='\[\033[33m\][\t]\[\033[1;32m\]\u@\h:\[\033[34m\]\w'
+
+PS1_MIDDLE=""
+if [[ $(uname) = "Darwin" ]];then
+	if [ -f ~/.git-prompt.sh ];then
+		source ~/.git-prompt.sh
+		PS1_MIDDLE='\[\033[37m\]$(__git_ps1)\[\033[92m\]'
+	fi
+elif [[ $(uname) = "Linux" ]];then
+	if [ -f /usr/share/git/git-prompt.sh ];then
+		. /usr/share/git/git-prompt.sh
+		PS1_MIDDLE='\[\033[37m\]$(__git_ps1)\[\033[92m\]'
+	fi
+fi
+
+if ! [[ -z ${CLOUD_ENV} ]];then
+	PS1_MIDDLE="${PS1_MIDDLE} \[\033[37m\](${CLOUD_ENV})\[\033[00m\]"
+fi
+
+PS1_POSTFIX="\$\[\033[00m\] "
+
+export PS1="${PS1_PREFIX} ${PS1_MIDDLE} ${PS1_POSTFIX}"
+
+}
+
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
 HISTCONTROL=ignoreboth
@@ -19,7 +46,7 @@ HISTFILESIZE=2000
 force_color_prompt=yes
 if [[ $(uname) = "Darwin" ]];then
 	alias ls="ls -G"
-	export PATH="$PATH:/usr/local/bin"
+	export PATH="/usr/local/opt/terraform@0.11/bin:$PATH:/usr/local/bin"
 elif [[ $(uname) = "Linux" ]];then
 	alias ls="ls --color=auto"
 fi
@@ -29,11 +56,14 @@ alias l='ls -CF'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-alias awsprod='aws eks --region us-east-1 update-kubeconfig --name production && export CLOUD_ENV=awsprod'
-alias awsstg='aws eks --region eu-west-1 update-kubeconfig --name staging && export CLOUD_ENV=awsstg'
-alias gcpprod='~/google-cloud-sdk/bin/gcloud container clusters get-credentials production --zone us-east1-b --project production-158815 && export CLOUD_ENV=gcpprod'
-alias gcpstg='~/google-cloud-sdk/bin/gcloud container clusters get-credentials k8s-staging --zone europe-west1-d --project staging-158815 && export CLOUD_ENV=gcpstg'
-alias gcploadtest='~/google-cloud-sdk/bin/gcloud container clusters get-credentials loadtest --zone europe-west1 --project staging-158815 && export CLOUD_ENV=loadtest'
+alias awsprod='ln -sf ~/.kube/aws-prod ~/.kube/config && export CLOUD_ENV=awsprod && build_ps1'
+alias awsstg='ln -sf ~/.kube/aws-stg ~/.kube/config && export CLOUD_ENV=awsstg && build_ps1'
+alias gcpstg='ln -sf ~/.kube/gcp-stg ~/.kube/config && export CLOUD_ENV=gcpstg && build_ps1'
+alias gcpprod='ln -sf ~/.kube/gcp-prod ~/.kube/config && export CLOUD_ENV=gcpprod && build_ps1'
+alias gcpprod='ln -sf ~/.kube/gcp-loadtest ~/.kube/config && export CLOUD_ENV=loadtest && build_ps1'
+#alias gcpprod='ln -sf ~/.kube/aws-prod ~/.kube/config && export CLOUD_ENV=gcpprod'
+#alias gcpstg='~/google-cloud-sdk/bin/gcloud container clusters get-credentials k8s-staging --zone europe-west1-d --project staging-158815 && export CLOUD_ENV=gcpstg'
+#alias gcploadtest='~/google-cloud-sdk/bin/gcloud container clusters get-credentials loadtest --zone europe-west1 --project staging-158815 && export CLOUD_ENV=loadtest'
 
 if [[ -f ~/.kube/config ]];then
 	if [[ $(cat ~/.kube/config  | grep "current-context" | grep "arn:aws:eks:us-east-1:506714715093:cluster/production" ) ]] ;then
@@ -86,32 +116,12 @@ if ! shopt -oq posix; then
   fi
 fi
 
-PS1_PREFIX='\[\033[33m\][\t]\[\033[1;32m\]\u@\h:\[\033[34m\]\w'
-
-PS1_MIDDLE=""
-if [[ $(uname) = "Darwin" ]];then
-	if [ -f ~/.git-prompt.sh ];then
-		source ~/.git-prompt.sh
-		PS1_MIDDLE='\[\033[37m\]$(__git_ps1)\[\033[92m\]'
-	fi
-elif [[ $(uname) = "Linux" ]];then
-	if [ -f /usr/share/git/git-prompt.sh ];then
-		. /usr/share/git/git-prompt.sh
-		PS1_MIDDLE='\[\033[37m\]$(__git_ps1)\[\033[92m\]'
-	fi
-fi
-
-if ! [[ -z ${CLOUD_ENV} ]];then
-	PS1_MIDDLE="${PS1_MIDDLE} \[\033[37m\](${CLOUD_ENV})\[\033[00m\]"
-fi
-
-PS1_POSTFIX="\$\[\033[00m\] "
-
-export PS1="${PS1_PREFIX} ${PS1_MIDDLE} ${PS1_POSTFIX}"
-
 
 export EDITOR=vim
+build_ps1
 
 if [ -f ~/.bashrc_extra ];then
   . ~/.bashrc_extra
 fi
+
+#alias kubectl='kubectl --kubeconfig=/Users/jorge.heleno/.kube/aws-stg'
