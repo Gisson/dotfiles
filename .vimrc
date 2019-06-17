@@ -24,10 +24,11 @@ Plugin 'git://git.wincent.com/command-t.git'
 " Pass the path to set the runtimepath properly.
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 Plugin 'scrooloose/nerdtree'
-Plugin 'xuhdev/vim-latex-live-preview'
+"Plugin 'xuhdev/vim-latex-live-preview'
 Plugin 'tpope/vim-surround'
 Plugin 'hashivim/vim-terraform'
 Plugin 'fatih/vim-go'
+Plugin 'scrooloose/syntastic'
 "Plugin 'scrooloose/syntastic'
 " Install L9 and avoid a Naming conflict if you've already installed a
 " different version somewhere else.
@@ -76,13 +77,27 @@ let g:terraform_fmt_on_save=1
 
 filetype indent on
 
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
+" syntastic config
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 "let g:syntastic_always_populate_loc_list = 1
 "let g:syntastic_auto_loc_list = 1
 "let g:syntastic_check_on_open = 1
-"let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_wq = 0
+let g:syntastic_go_checkers = ['go', 'golint', 'errcheck']
+let g:syntastic_tex_checkers = ['lacheck', 'text/language_check']
+let g:syntastic_python_checkers = ['pylint']
+highlight link SyntasticErrorSign SignColumn
+highlight link SyntasticWarningSign SignColumn
+highlight link SyntasticStyleErrorSign SignColumn
+highlight link SyntasticStyleWarningSign SignColumn
+let mapleader = ","
+nmap <silent> <leader>s :set spell!<CR>
+set spell spelllang=en_gb
+set spell!
+
+
 color delek
 set number
