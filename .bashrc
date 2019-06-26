@@ -4,6 +4,10 @@ case $- in
       *) return;;
 esac
 
+function suspend {
+	echo -n "mem" >/sys/power/state;
+}
+
 function build_ps1 {
 
 if [[ $(whoami) = "root" ]];then
@@ -49,28 +53,11 @@ HISTFILESIZE=2000
 
 force_color_prompt=yes
 if [[ $(uname) = "Darwin" ]];then
-	alias ls="ls -G"
 	export PATH="/usr/local/opt/terraform@0.11/bin:$PATH:/usr/local/bin"
-elif [[ $(uname) = "Linux" ]];then
-	alias ls="ls --color=auto"
 fi
 
 (which go && export PATH="${PATH}:${HOME}/go/bin") &>/dev/null
 
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
-alias awsprod='ln -sf ~/.kube/aws-prod ~/.kube/config && export CLOUD_ENV=awsprod && build_ps1'
-alias awsstg='ln -sf ~/.kube/aws-stg ~/.kube/config && export CLOUD_ENV=awsstg && build_ps1'
-alias gcpstg='ln -sf ~/.kube/gcp-stg ~/.kube/config && export CLOUD_ENV=gcpstg && build_ps1'
-alias gcpprod='ln -sf ~/.kube/gcp-prod ~/.kube/config && export CLOUD_ENV=gcpprod && build_ps1'
-alias gcpprod='ln -sf ~/.kube/gcp-loadtest ~/.kube/config && export CLOUD_ENV=loadtest && build_ps1'
-#alias gcpprod='ln -sf ~/.kube/aws-prod ~/.kube/config && export CLOUD_ENV=gcpprod'
-#alias gcpstg='~/google-cloud-sdk/bin/gcloud container clusters get-credentials k8s-staging --zone europe-west1-d --project staging-158815 && export CLOUD_ENV=gcpstg'
-#alias gcploadtest='~/google-cloud-sdk/bin/gcloud container clusters get-credentials loadtest --zone europe-west1 --project staging-158815 && export CLOUD_ENV=loadtest'
 
 if [[ -f ~/.kube/config ]];then
 	if [[ $(cat ~/.kube/config  | grep "current-context" | grep "arn:aws:eks:us-east-1:506714715093:cluster/production" ) ]] ;then
@@ -81,8 +68,6 @@ if [[ -f ~/.kube/config ]];then
 		export CLOUD_ENV="gcpprod"
 	elif [[ $(cat ~/.kube/config  | grep "current-context" | grep "gke_staging-158815_europe-west1-d_k8s-staging" ) ]] ;then
 		export CLOUD_ENV="gcpstg"
-	elif [[ $(cat ~/.kube/config | grep "current-context" | grep "gke_staging-158815_europe-west1_loadtest") ]];then
-		export CLOUD_ENV="loadtest"
 	elif ! [[ $(cat ~/.kube/config | grep "current-context") ]];then
 		export CLOUD_ENV=""
 	else
@@ -90,32 +75,10 @@ if [[ -f ~/.kube/config ]];then
 	fi
 fi
 
-function printawsenv {
-	red="\e[31m"
-	yellow="\e[33m"
-	green="\e[32m"
-	white="\e[00m"
-	if [[ $AWS_ENV = "prod" ]];then
-		echo -n "prod"
-		#export __aws_ps1="(${red}prod)${white}"
-	elif [[ $AWS_ENV = "stg" ]];then
-		echo -n "stg"
-		#export __aws_ps1="(${green}stg)${white}"
-	else
-		echo -n "(${yellow}unknown)${white}"
-	fi
-
-}
-
-function suspend {
-	echo -n "mem" >/sys/power/state;
-}
 
 
 
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
+
 
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
@@ -136,5 +99,8 @@ if [ -f ~/.bashrc_extra ];then
   . ~/.bashrc_extra
 fi
 
-#alias kubectl='kubectl --kubeconfig=/Users/jorge.heleno/.kube/aws-stg'
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
 export PATH="$PATH:/home/jorge/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin"
