@@ -54,6 +54,9 @@ if [[ $(uname) = "Darwin" ]];then
 elif [[ $(uname) = "Linux" ]];then
 	alias ls="ls --color=auto"
 fi
+
+(which go && export PATH="${PATH}:${HOME}/go/bin") &>/dev/null
+
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
