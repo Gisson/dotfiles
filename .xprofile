@@ -4,4 +4,5 @@ setxkbmap us
 [[ $(which xscreensaver 2>/dev/null) ]] && xscreensaver -no-splash &
 [[ $(which xcompmgr 2>/dev/null) ]] && xcompmgr &
 [[ $(which nm-applet 2>/dev/null) ]] && nm-applet &
-[[ -f .fehbg ]] && . /home/jorge/.fehbg &
+[[ -f .fehbg ]] && . /home/jorge/.fehbg
+[[ -f ~/.screenlayout/default.sh ]] && ~/.screenlayout/default.sh
