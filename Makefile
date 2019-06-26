@@ -1,12 +1,15 @@
 #!/usr/bin/make -f
-.PHONY: install uninstall
+.PHONY: install uninstall dist
+version=0.1
 
-install: zsh-git-prompt ~/.config/awesome ~/.zshrc ~/.Xresources ~/.screenrc ~/.vimrc
+all: install
+
+install: zsh-git-prompt ~/.config/awesome ~/.zshrc ~/.Xresources ~/.screenrc ~/.bashrc ~/.vimrc ~/.vim/bundle
 
 zsh-git-prompt:
 	git clone https://github.com/olivierverdier/zsh-git-prompt.git
 
-~/.vimrc:
+~/.vimrc: 
 	ln -sf ~/dotfiles/.vimrc ~/.vimrc
 
 ~/.screenrc:
@@ -21,7 +24,23 @@ zsh-git-prompt:
 ~/.config/awesome:
 	ln -sf ~/dotfiles/.config/awesome ~/.config/awesome
 
+~/.bash_aliases:
+	ln -sf ~/dotfiles/.bash_aliases ~/.bash_aliases
 
+~/.vim/bundle:
+	mkdir -p ~/.vim/bundle
+	$$(git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim)
+	vim \+PluginInstall \+qall
+
+
+~/.bashrc: ~/.bash_aliases
+	ln -sf ~/dotfiles/.bashrc ~/.bashrc
+
+dist:
+	mkdir -p dotfiles-${version}
+	cp -r .vimrc .screenrc .Xresources .zshrc .config .bash* dotfiles-${version}
+	tar czf dotfiles-${version}.tar.gz dotfiles-${version}
+	rm -rf dotfiles-${version}
 
 
 uninstall:
@@ -31,3 +50,4 @@ uninstall:
 	-unlink ~/.Xresources
 	-unlink ~/.config/awesome
 	-rm -rf zsh-git-prompt
+	-rm -rf ~/.vim/bundle
