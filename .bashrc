@@ -6,7 +6,11 @@ esac
 
 function build_ps1 {
 
-PS1_PREFIX='\[\033[33m\][\t]\[\033[1;32m\]\u@\h:\[\033[34m\]\w'
+if [[ $(whoami) = "root" ]];then
+	PS1_PREFIX='\[\033[33m\][\t]\[\033[1;31m\]\u@\h:\[\033[34m\]\w'
+else
+	PS1_PREFIX='\[\033[33m\][\t]\[\033[1;32m\]\u@\h:\[\033[34m\]\w'
+fi
 
 PS1_MIDDLE=""
 if [[ $(uname) = "Darwin" ]];then
@@ -100,6 +104,11 @@ function printawsenv {
 
 }
 
+function suspend {
+	echo -n "mem" >/sys/power/state;
+}
+
+
 
 if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
@@ -125,3 +134,4 @@ if [ -f ~/.bashrc_extra ];then
 fi
 
 #alias kubectl='kubectl --kubeconfig=/Users/jorge.heleno/.kube/aws-stg'
+export PATH="$PATH:/home/jorge/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin"
