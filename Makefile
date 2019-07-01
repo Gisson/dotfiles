@@ -4,7 +4,7 @@ version=0.1
 
 all: install
 
-install: zsh-git-prompt ~/.config/awesome ~/.zshrc ~/.Xresources ~/.screenrc ~/.bashrc ~/.vimrc ~/.vim/bundle
+install: zsh-git-prompt ~/.config/awesome ~/.zshrc ~/.Xresources ~/.screenrc ~/.bashrc ~/.vimrc ~/.vim/bundle ~/.bash_aliases
 
 zsh-git-prompt:
 	git clone https://github.com/olivierverdier/zsh-git-prompt.git
@@ -33,8 +33,9 @@ zsh-git-prompt:
 	vim \+PluginInstall \+qall
 
 
-~/.bashrc: ~/.bash_aliases
+~/.bashrc:
 	ln -sf ~/dotfiles/.bashrc ~/.bashrc
+
 
 dist:
 	mkdir -p dotfiles-${version}

@@ -56,6 +56,10 @@ if [[ $(uname) = "Darwin" ]];then
 	export PATH="/usr/local/opt/terraform@0.11/bin:$PATH:/usr/local/bin"
 fi
 
+if [[ -d "${HOME}/Library/Python/3.7/bin" ]];then
+	export PATH="$PATH:${HOME}/Library/Python/3.7/bin"
+fi
+
 (which go && export PATH="${PATH}:${HOME}/go/bin") &>/dev/null
 
 
