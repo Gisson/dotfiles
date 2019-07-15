@@ -11,9 +11,24 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local os = require("os")
+local battery_helper = require("batteryhelpers")
 
 --batterybar = require("batterybar")
-battery = require("battery")
+local battery_support = battery_helper.is_battery()
+if battery_support
+then
+	battery = require("battery")
+gears.timer {
+    timeout   = 10,
+    call_now  = true,
+    autostart = true,
+    callback  = function()
+        -- You should read it from `/sys/class/power_supply/` (on Linux)
+        -- instead of spawning a shell. This is only an example.
+		battery.reload()
+    end
+}
+end
 
 
 -- Enable hotkeys help widget for VIM and other apps
@@ -202,7 +217,10 @@ awful.screen.connect_for_each_screen(function(s)
 	if s.index == 1 then
 		right_layout:add(wibox.widget.systray())
 	end
-	right_layout:add(battery.widget)
+	if battery_support
+	then
+		right_layout:add(battery.widget)
+	end
 	right_layout:add(mykeyboardlayout)
 	right_layout:add(mytextclock)
 	right_layout:add(s.mylayoutbox)
