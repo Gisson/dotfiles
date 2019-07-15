@@ -1,5 +1,5 @@
 #!/usr/bin/make -f
-.PHONY: install uninstall dist
+.PHONY: install uninstall dist arch_package
 version=0.1
 
 all: install
@@ -42,6 +42,8 @@ zsh-git-prompt:
 ~/.bashrc:
 	ln -sf ~/dotfiles/.bashrc ~/.bashrc
 
+arch_package:
+	cd archlinux && makepkg --syncdeps -f
 
 dist:
 	mkdir -p dotfiles-${version}
