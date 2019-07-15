@@ -4,7 +4,7 @@ naughty = require("naughty")
 
 local battery = {
 	widget = wibox.widget.textbox(),
-	path1 = "/sys/class/power_supply/BAT0/",
+	path1 = "/sys/class/power_supply/BAT1/",
 	color = {
 		danger = "#f44242",
 		warning = "#f4b942",
