@@ -4,7 +4,7 @@ version=0.1
 
 all: install
 
-install: zsh-git-prompt ~/.config/awesome ~/.zshrc ~/.Xresources ~/.screenrc ~/.bashrc ~/.vimrc ~/.vim/bundle ~/.bash_aliases
+install: zsh-git-prompt ~/.config/awesome ~/.zshrc ~/.Xresources ~/.screenrc ~/.bashrc ~/.vimrc ~/.vim/bundle ~/.bash_aliases ~/.xprofile ~/.xinitrc
 
 zsh-git-prompt:
 	git clone https://github.com/olivierverdier/zsh-git-prompt.git
@@ -12,8 +12,14 @@ zsh-git-prompt:
 ~/.vimrc: 
 	ln -sf ~/dotfiles/.vimrc ~/.vimrc
 
+~/.xinitrc:
+	ln -sf ~/dotfiles/.xinitrc ~/.xinitrc 
+
 ~/.screenrc:
 	ln -sf ~/dotfiles/.screenrc ~/.screenrc
+
+~/.xprofile:
+	ln -sf ~/dotfiles/.xprofile ~/.xprofile
 
 ~/.Xresources:
 	ln -sf ~/dotfiles/.Xresources ~/.Xresources
