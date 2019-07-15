@@ -1,16 +1,28 @@
 pkgname=dotfiles
-pkgver=0.1
+pkgver=0.2
 pkgdesc="Package including my dotfiles configs"
 pkgrel=1
 url="https://github.com/Gisson/dotfiles.git"
 arch=(any)
+depends=('awesome'
+		'rxvt-unicode'
+		'rxvt-unicode-terminfo'
+		'screenfetch'
+		'bash'
+		'screen'
+		'slim'
+		'xscreensaver'
+		'vim'
+		'feh'
+		'python3'
+		'python-pip'
+		'xorg-server'
+		'xorg-xrdb'
+		'pulseaudio'
+		'networkmanager'
+		'nm-connection-editor'
+		'xcompmgr'
+		'pavucontrol')
+source=("https://github.com/Gisson/dotfiles/archive/0.2.zip")
+sha256sums=('dcfb2956905d4d0838e1cee273f9a899e59051c00723c8a4ead051ca5087c735')
 
-
-prepare(){
-	cd ~/dotfiles
-}
-
-package(){
-	cd ~/dotfiles
-	make install
-}
