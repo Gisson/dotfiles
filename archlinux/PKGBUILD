@@ -26,3 +26,9 @@ depends=('awesome'
 source=("https://github.com/Gisson/dotfiles/archive/0.2.zip")
 sha256sums=('dcfb2956905d4d0838e1cee273f9a899e59051c00723c8a4ead051ca5087c735')
 
+
+package () {
+	cd "$pkgname-$pkgver"
+	mkdir -p $pkgdir/opt/$pkgname
+	cp -R * $pkgdir/opt/$pkgname
+}
