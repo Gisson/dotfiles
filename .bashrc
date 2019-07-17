@@ -5,7 +5,37 @@ case $- in
 esac
 
 function suspend {
-	echo -n "mem" >/sys/power/state;
+  if [ $(whoami) != "root" ] ;then
+    sudo bash -c "echo 'mem' >/sys/power/state"
+  else
+	echo 'mem' >/sys/power/state;
+  fi
+}
+function build_kubeconfig {
+
+ if [[ -f ~/.kube/config ]];then
+   local cloud=$(cat ~/.kube/config  | grep "current-context")
+   local cluster
+   if [[ $(echo $cloud | grep "aws") ]];then
+     cluster="aws-$(echo $cloud  | sed -e 's/.*:cluster\///g')"
+   elif [[ $(echo $cloud | grep "gke") ]];then
+     custer="gke-$(echo $cloud | sed -e 's/.*_k8s-//g')"
+   else
+     cluster="unknown"
+   fi
+   printf $cluster
+ fi
+}
+
+function launch_steam {
+  if  [[ $(id steam) ]] &&  [[ -d /home/steam ]]; then
+    echo "Running steam"
+    sudo cp ${HOME}/.Xauthority /home/steam/
+    {
+    sudo chown steam:steam /home/steam/.Xauthority
+    sudo -u steam DISPLAY=:0 XAUTHORITY=/home/steam/.Xauthority steam
+  } &>/dev/null & disown
+  fi
 }
 
 function build_ps1 {
@@ -30,7 +60,7 @@ elif [[ $(uname) = "Linux" ]];then
 fi
 
 if ! [[ -z ${CLOUD_ENV} ]];then
-	PS1_MIDDLE="${PS1_MIDDLE} \[\033[37m\](${CLOUD_ENV})\[\033[00m\]"
+  PS1_MIDDLE="${PS1_MIDDLE} \[\033[37m\](`build_kubeconfig`)\[\033[00m\]"
 fi
 
 PS1_POSTFIX="\$\[\033[00m\] "
@@ -80,6 +110,7 @@ if [[ -f ~/.kube/config ]];then
 fi
 
 
+which go &>/dev/null && export PATH="${PATH}:${HOME}/go/bin" 
 
 
 
@@ -108,3 +139,4 @@ if [ -f ~/.bash_aliases ]; then
 fi
 
 export PATH="$PATH:/home/jorge/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin"
+export PROMPT_COMMAND=build_ps1
