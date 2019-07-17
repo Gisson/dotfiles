@@ -93,11 +93,22 @@ highlight link SyntasticErrorSign SignColumn
 highlight link SyntasticWarningSign SignColumn
 highlight link SyntasticStyleErrorSign SignColumn
 highlight link SyntasticStyleWarningSign SignColumn
+
+" speller
 let mapleader = ","
 nmap <silent> <leader>s :set spell!<CR>
 set spell spelllang=en_gb
 set spell!
 
+" vim-go
+let g:go_def_mode='gopls'
+let g:go_info_mode='gopls'
+let g:go_highlight_structs = 0
+let g:go_highlight_interfaces = 0
+let g:go_highlight_operators = 0
+
+
+set tabstop=4 shiftwidth=2 expandtab
 
 color delek
 set number
