@@ -17,4 +17,6 @@ shell	bash
 autodetach on
 
 # I like to hear the beep.
-vbell off
+vbell on
+vbell_msg ''
+termcapinfo *  vb=:
