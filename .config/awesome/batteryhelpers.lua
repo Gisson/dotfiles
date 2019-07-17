@@ -20,8 +20,7 @@ local function getBatteryPercent()
 end
 
 function battery_helper.is_battery ()
-	local battery = require("battery")
-	local f = io.open(battery.path1)
+	local f = io.open("/sys/class/power_supply/BAT1")
 	if f~=nil
 	then
 		io.close(f)
