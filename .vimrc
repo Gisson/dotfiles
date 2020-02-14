@@ -29,6 +29,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'hashivim/vim-terraform'
 Plugin 'fatih/vim-go'
 Plugin 'scrooloose/syntastic'
+Plugin 'glench/vim-jinja2-syntax'
 "Plugin 'scrooloose/syntastic'
 " Install L9 and avoid a Naming conflict if you've already installed a
 " different version somewhere else.

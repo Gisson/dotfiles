@@ -40,13 +40,24 @@ function launch_steam {
   fi
 }
 
+function build_ps1_prefix {
+  if [[ $(whoami) = "root" ]];then
+	PS1_PREFIX='\[\033[33m\][\t]\[\033[1;31m\]\u@\h:\[\033[34m\]\w'
+  else
+	PS1_PREFIX='\[\033[33m\][\t]\[\033[1;32m\]\u@\h:\[\033[34m\]\w'
+  fi
+
+  if  [[ "${VIRTUAL_ENV}" ]];then
+    PS1_PREFIX="(venv) ${PS1_PREFIX}"
+  fi
+
+
+echo -n $PS1_PREFIX
+}
+
 function build_ps1 {
 
-if [[ $(whoami) = "root" ]];then
-	PS1_PREFIX='\[\033[33m\][\t]\[\033[1;31m\]\u@\h:\[\033[34m\]\w'
-else
-	PS1_PREFIX='\[\033[33m\][\t]\[\033[1;32m\]\u@\h:\[\033[34m\]\w'
-fi
+  PS1_PREFIX=$(build_ps1_prefix)
 
 PS1_MIDDLE=""
 if [[ $(uname) = "Darwin" ]];then
@@ -144,3 +155,5 @@ fi
 
 export PATH="$PATH:/home/jorge/rpi/tools/arm-bcm2708/gcc-linaro-arm-linux-gnueabihf-raspbian-x64/bin"
 export PROMPT_COMMAND=build_ps1
+
+alias battlenet='WINEPREFIX=/home/jorge/.wine && /home/jorge/.PlayOnLinux/wine/linux-amd64/4.15-staging/bin/wine64 ~/.wine/drive_c/Program\ Files\ \(x86\)/Battle.net/Battle.net.exe & disown'
