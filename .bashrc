@@ -19,7 +19,9 @@ function build_kubeconfig {
    if [[ $(echo $cloud | grep "aws") ]];then
      cluster="aws-$(echo $cloud  | sed -e 's/.*:cluster\///g')"
    elif [[ $(echo $cloud | grep "gke") ]];then
-     custer="gke-$(echo $cloud | sed -e 's/.*_k8s-//g')"
+     cluster="gke-$(echo $cloud | sed -e 's/.*_k8s-//g')"
+   elif [[ $(echo $cloud | grep "service-hub") ]];then
+     cluster="service-hub"
    else
      cluster="unknown"
    fi
@@ -83,7 +85,7 @@ HISTFILESIZE=2000
 
 force_color_prompt=yes
 if [[ $(uname) = "Darwin" ]];then
-	export PATH="/usr/local/opt/terraform@0.11/bin:$PATH:/usr/local/bin"
+	export PATH="/usr/local/bin:$PATH"
 fi
 
 if [[ -d "${HOME}/Library/Python/3.7/bin" ]];then
@@ -98,6 +100,8 @@ if [[ -f ~/.kube/config ]];then
 		export CLOUD_ENV="awsprod"
 	elif [[ $(cat ~/.kube/config  | grep "current-context" | grep "arn:aws:eks:eu-west-1:506714715093:cluster/staging" ) ]] ;then
 		export CLOUD_ENV="awsstg"
+	elif [[ $(cat ~/.kube/config  | grep "current-context" | grep "service-hub" ) ]] ;then
+        export CLOUD_ENV="service-hub"
 	elif [[ $(cat ~/.kube/config  | grep "current-context" | grep "gke_production-158815_us-east1-b_production" ) ]] ;then
 		export CLOUD_ENV="gcpprod"
 	elif [[ $(cat ~/.kube/config  | grep "current-context" | grep "gke_staging-158815_europe-west1-d_k8s-staging" ) ]] ;then

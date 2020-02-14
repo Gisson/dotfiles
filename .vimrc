@@ -70,8 +70,8 @@ let g:livepreview_engine = 'pdflatex'
 
 " vim-terraform
 let g:terraform_align=1
-let g:terraform_fold_sections=1
-let g:terraform_remap_spacebar=1
+let g:terraform_fold_sections=0
+let g:terraform_remap_spacebar=0
 let g:terraform_fmt_on_save=1
 
 
@@ -106,9 +106,11 @@ let g:go_info_mode='gopls'
 let g:go_highlight_structs = 0
 let g:go_highlight_interfaces = 0
 let g:go_highlight_operators = 0
+let g:go_version_warning = 0
 
 
 set tabstop=4 shiftwidth=2 expandtab
 
 color delek
 set number
+set backspace=indent,eol,start

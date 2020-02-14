@@ -20,3 +20,5 @@ autodetach on
 vbell on
 vbell_msg ''
 termcapinfo *  vb=:
+defscrollback 3000
+scrollback 3000
